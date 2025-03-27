@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\EventModel;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\RESTful\ResourceController;
 
@@ -12,9 +13,13 @@ class EventController extends ResourceController
      *
      * @return ResponseInterface
      */
+
+    protected $modelName = 'App\Models\EventModel';
+    protected $format = 'json';
+
     public function index()
     {
-        //
+        return $this->respond($this->model->findAll());
     }
 
     /**
@@ -46,7 +51,11 @@ class EventController extends ResourceController
      */
     public function create()
     {
-        //
+        $data=$this->request->getpost();
+        if($this->model->insert($data)) {
+            return $this->respondCreated(['message'=>'Event berhsil ditambahkan!']);
+        }
+        return $this->failValidationErrors($this->model->errors());
     }
 
     /**
