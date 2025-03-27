@@ -51,7 +51,7 @@ class EventController extends ResourceController
      */
     public function create()
     {
-        $data=$this->request->getpost();
+        $data=$this->request->getPost();
         if($this->model->insert($data)) {
             return $this->respondCreated(['message'=>'Event berhsil ditambahkan!']);
         }
