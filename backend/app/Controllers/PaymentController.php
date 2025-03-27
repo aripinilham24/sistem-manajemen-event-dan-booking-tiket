@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\PaymentModel;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\RESTful\ResourceController;
 
@@ -12,9 +13,12 @@ class PaymentController extends ResourceController
      *
      * @return ResponseInterface
      */
+
+     protected $modelName='App\Models\PaymentModel';
+     protected $format = 'json';
     public function index()
     {
-        //
+        return $this->respond($this->model->findAll());
     }
 
     /**
@@ -46,7 +50,11 @@ class PaymentController extends ResourceController
      */
     public function create()
     {
-        //
+        $data=$this->request->getPost();
+        if($this->model->insert($data)) {
+            return $this->respondCreated(['message'=>'Payment berhsil ditambahkan!']);
+        }
+        return $this->failValidationErrors($this->model->errors());
     }
 
     /**
